@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "./AggregatorInterface.sol";
 
 contract PriceConsumerV3 {
-    AggregatorV3Interface internal priceFeed;
+    AggregatorInterface internal priceFeed;
 
     /**
      * Network: Kovan
@@ -12,7 +12,7 @@ contract PriceConsumerV3 {
      * Address: 0x9326BFA02ADD2366b30bacB125260Af641031331
      */
     constructor() {
-        priceFeed = AggregatorV3Interface(
+        priceFeed = AggregatorInterface(
             0x9326BFA02ADD2366b30bacB125260Af641031331
         );
     }
