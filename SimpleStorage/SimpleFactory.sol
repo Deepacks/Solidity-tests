@@ -8,8 +8,7 @@ contract StorageFactory is SimpleStorage {
     SimpleStorage[] public simpleStorageArray;
 
     function createSimpleStorage() public {
-        SimpleStorage simpleStorage = new SimpleStorage();
-        simpleStorageArray.push(simpleStorage);
+        simpleStorageArray.push(new SimpleStorage());
     }
 
     function sfStore(
@@ -17,10 +16,8 @@ contract StorageFactory is SimpleStorage {
         string memory _name,
         uint256 _favoriteNumber
     ) public {
-        SimpleStorage simpleStorage = SimpleStorage(
-            address(simpleStorageArray[_simpleStorageIndex])
-        );
-        simpleStorage.addPerson(_name, _favoriteNumber);
+        SimpleStorage(address(simpleStorageArray[_simpleStorageIndex]))
+            .addPerson(_name, _favoriteNumber);
     }
 
     function sfRetrieve(uint256 _simpleStorageIndex, string memory _name)
@@ -28,9 +25,8 @@ contract StorageFactory is SimpleStorage {
         view
         returns (uint256)
     {
-        SimpleStorage simpleStorage = SimpleStorage(
-            address(simpleStorageArray[_simpleStorageIndex])
-        );
-        return simpleStorage.retrievePerson(_name);
+        return
+            SimpleStorage(address(simpleStorageArray[_simpleStorageIndex]))
+                .retrievePerson(_name);
     }
 }
