@@ -9,13 +9,22 @@ compiler:
       - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@3.4.0"
 networks:
   default: "development"
-  mainnet:
-    eth_usd_price_feed: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
+  development:
+    callback_gas_limit: "100000"
+    key_hash: "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc"
+    s_subscriptionId: "2544"
   rinkeby:
     eth_usd_price_feed: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e"
-    s_subscriptionId: "2544"
     vrf_coordinator: "0x6168499c0cFfCaCD319c818142124B7A15E857ab"
-    key_hash: "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc"
     callback_gas_limit: "100000"
+    key_hash: "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc"
+    s_subscriptionId: "2544"
+    verify: True
+  mainnet-fork:
+    eth_usd_price_feed: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
+    vrf_coordinator: "0x271682DEB8C4E0901D1a1550aD2e64D568E69909"
+    callback_gas_limit: "100000"
+    key_hash: "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc"
+    s_subscriptionId: "2544"
 wallets:
   from_key: ${PRIVATE_KEY}

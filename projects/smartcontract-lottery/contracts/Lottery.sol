@@ -65,25 +65,6 @@ contract Lottery is VRFConsumerBaseV2, Ownable {
         return s_requestId;
     }
 
-    function fulfillRandomWords(
-        uint256, /* _requestId */
-        uint256[] memory _randomness
-    ) internal override {
-        require(
-            lottery_state == LOTTERY_STATE.CALCULATING_WINNER,
-            "Wrong callback call"
-        );
-        require(_randomness[0] > 0, "Invalid random value");
-
-        uint256 indexOfWinners = _randomness[0] % players.length;
-        recentWinner = players[indexOfWinners];
-        recentWinner.transfer(address(this).balance);
-
-        players = new address payable[](0);
-        lottery_state = LOTTERY_STATE.CLOSED;
-        lastRandomness = _randomness[0];
-    }
-
     function getEntranceFee() public view returns (uint256) {
         (, int256 answer, , , ) = ethUsdPriceFeed.latestRoundData();
         return (usdEntryFee * (10**18)) / (uint256(answer) * (10**10));
@@ -102,7 +83,25 @@ contract Lottery is VRFConsumerBaseV2, Ownable {
 
     function endLottery() public onlyOwner {
         lottery_state = LOTTERY_STATE.CALCULATING_WINNER;
+        uint256 requestId = requestRandomness();
+    }
 
-        requestRandomness();
+    function fulfillRandomWords(
+        uint256 _requestId,
+        uint256[] memory _randomness
+    ) internal override {
+        require(
+            lottery_state == LOTTERY_STATE.CALCULATING_WINNER,
+            "Wrong callback call"
+        );
+        require(_randomness[0] > 0, "Invalid random value");
+
+        uint256 indexOfWinners = _randomness[0] % players.length;
+        recentWinner = players[indexOfWinners];
+        recentWinner.transfer(address(this).balance);
+
+        players = new address payable[](0);
+        lottery_state = LOTTERY_STATE.CLOSED;
+        lastRandomness = _randomness[0];
     }
 }

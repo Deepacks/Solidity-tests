@@ -1,14 +1,17 @@
-from brownie import accounts, config, network, Lottery
+from brownie import config, network, Lottery
+from scripts.helpers import get_account, get_contract
 
 
 def deploy_lottery():
+    account = get_account(index=1)
     lottery = Lottery.deploy(
-        config["networks"][network.show_active()]["eth_usd_price_feed"],
-        config["networks"][network.show_active()]["vrf_coordinator"],
+        get_contract("eth_usd_price_feed").address,
+        get_contract("vrf_coordinator").address,
         config["networks"][network.show_active()]["callback_gas_limit"],
         config["networks"][network.show_active()]["key_hash"],
         config["networks"][network.show_active()]["s_subscriptionId"],
-        {"from": accounts.add(config["wallets"]["from_key"])},
+        {"from": account},
+        publish_source=config["networks"][network.show_active()].get("verify", False),
     )
     print("Contract deployed to {}".format(lottery.address))
 
